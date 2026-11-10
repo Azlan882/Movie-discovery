@@ -746,11 +746,19 @@ const genres = [
   'Sci-Fi',
   'Thriller',
 ];
+
 let activeGenre = 'All';
 let query = '';
 let selectedMovie: Movie | null = null;
 let saved = new Set<number>();
-type Trailer = { videoId: string; title: string; channelTitle: string; thumbnailUrl: string };
+
+type Trailer = {
+  videoId: string;
+  title: string;
+  channelTitle: string;
+  thumbnailUrl: string;
+};
+
 const trailerCache = new Map<number, Trailer | null>();
 const trailerChecked = new Set<number>();
 const trailerLoading = new Set<number>();
@@ -758,6 +766,7 @@ const trailerErrors = new Set<number>();
 let playingTrailerId: number | null = null;
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
+
 const escapeHtml = (value: string) =>
   value.replace(
     /[&<>\"']/g,
@@ -770,6 +779,7 @@ const escapeHtml = (value: string) =>
         "'": '&#39;',
       })[char] || char
   );
+
 const officialPosterImages = new Map<number, string>();
 let officialPostersLoading = false;
 let officialPostersLoaded = false;
@@ -779,21 +789,43 @@ const posterFallback = (movie: Movie) =>
 
 const poster = (movie: Movie, large = false) => {
   const imageUrl = officialPosterImages.get(movie.id);
+
   return `<div class="poster poster-${movie.mood} ${large ? 'poster-large' : ''} ${imageUrl ? 'poster-official' : ''}" aria-label="${imageUrl ? 'Official poster image' : 'Illustrated poster artwork'} for ${escapeHtml(movie.title)}">${imageUrl ? `<img class="official-poster-image" src="${escapeHtml(imageUrl)}" alt="Official movie poster for ${escapeHtml(movie.title)}" loading="${large ? 'eager' : 'lazy'}" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('poster-image-failed');this.remove()">` : ''}${posterFallback(movie)}</div>`;
 };
 
 async function loadOfficialPosters() {
   if (officialPostersLoading || officialPostersLoaded) return;
+
   officialPostersLoading = true;
+
   try {
-    const response = await fetch('/api/posters', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ movies: movies.map(movie => ({ id: movie.id, title: movie.title })) }) });
+    const response = await fetch('/api/posters', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        movies: movies.map(movie => ({
+          id: movie.id,
+          title: movie.title,
+        })),
+      }),
+    });
+
     if (!response.ok) throw new Error('Poster lookup failed');
-    const data = await response.json() as { posters?: { id: number; imageUrl: string }[] };
+
+    const data = (await response.json()) as {
+      posters?: { id: number; imageUrl: string }[];
+    };
+
     for (const item of data.posters || []) {
-      if (Number.isInteger(item.id) && typeof item.imageUrl === 'string' && /^https:\/\//.test(item.imageUrl)) {
+      if (
+        Number.isInteger(item.id) &&
+        typeof item.imageUrl === 'string' &&
+        /^https:\/\//.test(item.imageUrl)
+      ) {
         officialPosterImages.set(item.id, item.imageUrl);
       }
     }
+
     if (officialPosterImages.size) render();
   } catch {
     // Keep the built-in artwork if the poster service is temporarily unavailable.
@@ -802,8 +834,21 @@ async function loadOfficialPosters() {
     officialPostersLoaded = true;
   }
 }
+
+/* Generate a unique, URL-safe slug for every movie. */
+function movieSlug(movie: Movie) {
+  return movie.title
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/* Movie cards are real links, so their URLs can be copied and shared. */
 const card = (movie: Movie, index: number) =>
-  `<button class="movie-card" data-movie="${movie.id}" style="--card-index:${index}" aria-label="View ${escapeHtml(movie.title)} details">${poster(movie)}<div class="card-meta"><div class="card-title-row"><h3>${escapeHtml(movie.title)}</h3>${movie.rating ? `<span class="rating"><span>★</span> ${escapeHtml(movie.rating)}</span>` : ''}</div><p>${movie.year} <span>·</span> ${escapeHtml(movie.genre)} <span>·</span> ${movie.runtime}</p></div></button>`;
+  `<a class="movie-card" href="/movie/${movieSlug(movie)}" data-movie="${movie.id}" style="--card-index:${index};text-decoration:none;color:inherit" aria-label="View ${escapeHtml(movie.title)} details">${poster(movie)}<div class="card-meta"><div class="card-title-row"><h3>${escapeHtml(movie.title)}</h3>${movie.rating ? `<span class="rating"><span>★</span> ${escapeHtml(movie.rating)}</span>` : ''}</div><p>${movie.year} <span>·</span> ${escapeHtml(movie.genre)} <span>·</span> ${movie.runtime}</p></div></a>`;
+
 const visibleMovies = () =>
   movies.filter(
     movie =>
@@ -816,6 +861,7 @@ const visibleMovies = () =>
 function render() {
   const list = visibleMovies();
   const featured = movies[0];
+
   app.innerHTML = `<header class="topbar"><button class="menu-toggle" id="genre-sidebar-toggle" aria-label="Open navigation menu" aria-expanded="false"><span>☰</span><span class="menu-label">Browse</span></button><a class="brand" href="#top" aria-label="Movie Discovery home"><span class="brand-mark">M<span>✦</span></span><span class="brand-name">MOVIE<span>DISCOVERY</span></span></a><nav class="desktop-nav" aria-label="Main navigation"><a class="nav-active" href="#discover">Discover</a><a href="#trending">Trending</a><a href="#genres">Genres</a></nav><button class="watchlist-button" id="watchlist-toggle"><span>♡</span><span class="watchlist-label">My list</span><b>${saved.size}</b></button></header>
   <div class="sidebar-scrim" id="sidebar-scrim"></div><aside class="genre-sidebar" id="genre-sidebar" aria-label="Browse movies"><div class="sidebar-heading"><span class="eyebrow muted-eyebrow">EXPLORE</span><button class="sidebar-close" id="sidebar-close" aria-label="Close navigation menu">×</button></div><button class="sidebar-home" data-sidebar-home><span>⌂</span> Discover all movies</button><button class="sidebar-section-toggle" id="movie-genres-toggle" aria-expanded="true"><span><span class="sidebar-icon">▤</span> Movie Genres</span><span class="sidebar-chevron">⌄</span></button><div class="sidebar-genre-list" id="sidebar-genre-list">${genres.filter(genre => genre !== 'All').map(genre => `<button class="sidebar-genre ${activeGenre === genre ? 'sidebar-genre-active' : ''}" data-sidebar-genre="${genre}"><span class="genre-dot"></span>${genre}<span class="sidebar-count">${movies.filter(movie => movie.genre === genre).length}</span></button>`).join('')}</div><div class="sidebar-divider"></div><a class="sidebar-link" href="#trending" data-sidebar-close><span>✦</span> Trending discoveries</a><div class="sidebar-note"><span>✧</span><p>Find your next favourite, one genre at a time.</p></div></aside>
   <main id="top"><section class="hero"><div class="hero-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR NEXT FAVOURITE STARTS HERE</div><h1>Less scrolling.<br/><em>More watching.</em></h1><p class="hero-description">Find films that stay with you. Explore stories, uncover hidden gems and discover what to watch next.</p><form class="search-box" id="search-form"><span class="search-icon">⌕</span><input id="movie-search" aria-label="Search movies" placeholder="Search titles, genres, moods…" value="${escapeHtml(query)}"/><button type="submit" aria-label="Search">Search <span>↗</span></button></form><div class="hero-proof"><span class="proof-stars">★★★★★</span><span>A little less guesswork. A lot more great cinema.</span></div></div><div class="hero-art"><div class="hero-glow"></div><div class="hero-ticket"><div class="ticket-top"><span>FEATURED DISCOVERY</span><span>NO. 001</span></div>${poster(featured, true)}<div class="ticket-caption"><div><span class="caption-label">THIS WEEK'S PICK</span><h2>${featured.title}</h2><p>${featured.tagline}</p></div><span class="ticket-arrow">↗</span></div></div><div class="floating-note note-top"><span>✦</span> Stories worth finding</div><div class="floating-note note-bottom"><span class="mini-star">✦</span><div><b>${movies.length} <small>films</small></b><small>Curated catalogue</small></div></div></div><div class="hero-index">01 <span></span> ${movies.length}</div></section>
@@ -824,13 +870,17 @@ function render() {
   <section class="section why-section" id="discover"><div class="section-heading"><div><div class="eyebrow muted-eyebrow">MADE FOR MOVIE PEOPLE</div><h2>Find your kind <em>of story.</em></h2></div></div><div class="feature-grid"><article class="feature-item"><span class="feature-icon">⌕</span><h3>Search with a purpose</h3><p>Find films by title, genre or the kind of story you're in the mood for.</p></article><article class="feature-item"><span class="feature-icon">✦</span><h3>Discover hidden gems</h3><p>Go beyond the same top-ten lists and find something unexpected.</p></article><article class="feature-item"><span class="feature-icon">↗</span><h3>Know where to watch</h3><p>Our planned watch guide will point you to verified, legitimate streaming options.</p></article></div></section></main>
   <footer class="footer"><a class="brand footer-brand" href="#top"><span class="brand-mark">M<span>✦</span></span><span class="brand-name">MOVIE<span>DISCOVERY</span></span></a><p>Made for the love of a good story.</p><div class="footer-links"><a href="#about" id="about-link">About</a><a href="#privacy" id="privacy-link">Privacy</a><a href="#contact" id="contact-link">Contact</a></div><small>© 2026 Movie Discovery · Independent concept prototype</small></footer>
   ${selectedMovie ? detailModal(selectedMovie) : ''}<div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+
   bindEvents();
 }
 
 function movieLinks(movie: Movie) {
   const titleYear = encodeURIComponent(movie.title + ' ' + movie.year);
   const filmQuery = encodeURIComponent(movie.title + ' film');
-  const trailerQuery = encodeURIComponent(movie.title + ' ' + movie.year + ' official trailer');
+  const trailerQuery = encodeURIComponent(
+    movie.title + ' ' + movie.year + ' official trailer'
+  );
+
   return `<div class="movie-links"><span class="caption-label">EXPLORE THIS FILM</span><div class="movie-link-list"><a href="https://www.imdb.com/find/?q=${titleYear}" target="_blank" rel="noopener noreferrer">IMDb <span>↗</span></a><a href="https://en.wikipedia.org/w/index.php?search=${filmQuery}" target="_blank" rel="noopener noreferrer">Wikipedia <span>↗</span></a><a href="https://www.youtube.com/results?search_query=${trailerQuery}" target="_blank" rel="noopener noreferrer">YouTube trailers <span>↗</span></a><a href="https://www.justwatch.com/us/search?q=${titleYear}" target="_blank" rel="noopener noreferrer">JustWatch <span>↗</span></a></div><p class="movie-links-note">External search links; availability and results can vary by country.</p></div>`;
 }
 
@@ -840,28 +890,45 @@ function detailModal(movie: Movie) {
 
 function trailerPanel(movie: Movie) {
   const trailer = trailerCache.get(movie.id);
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(movie.title + ' ' + movie.year + ' official trailer')}`;
+
   if (trailer && playingTrailerId === movie.id) {
     return `<div class="trailer-panel"><div class="trailer-player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailer.videoId)}?autoplay=1&rel=0&playsinline=1" title="${escapeHtml(movie.title)}" loading="eager" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`;
   }
+
   if (trailer) {
     return `<div class="trailer-panel"><button type="button" class="trailer-thumbnail" data-play-trailer aria-label="Play ${escapeHtml(movie.title)}">${poster(movie, true)}<span class="trailer-play-icon" aria-hidden="true">▶</span></button></div>`;
   }
+
   const stateClass = trailerLoading.has(movie.id) ? ' preview-loading' : '';
-  const status = trailerErrors.has(movie.id) || trailerChecked.has(movie.id) ? ' preview-fallback' : stateClass;
+  const status =
+    trailerErrors.has(movie.id) || trailerChecked.has(movie.id)
+      ? ' preview-fallback'
+      : stateClass;
+
   return `<div class="trailer-panel"><button type="button" class="trailer-thumbnail${status}" data-play-trailer aria-label="Play ${escapeHtml(movie.title)}">${poster(movie, true)}<span class="trailer-play-icon" aria-hidden="true">▶</span></button></div>`;
 }
 
 async function loadTrailer(movie: Movie, retry = false) {
   if (trailerLoading.has(movie.id)) return;
   if (trailerChecked.has(movie.id) && !retry) return;
+
   trailerLoading.add(movie.id);
   trailerErrors.delete(movie.id);
   render();
+
   try {
-    const response = await fetch('/api/trailers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: movie.title, year: movie.year }) });
+    const response = await fetch('/api/trailers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: movie.title, year: movie.year }),
+    });
+
     if (!response.ok) throw new Error('Trailer lookup failed');
-    const data = await response.json() as { trailer?: Trailer | null };
+
+    const data = (await response.json()) as {
+      trailer?: Trailer | null;
+    };
+
     trailerCache.set(movie.id, data.trailer || null);
     trailerChecked.add(movie.id);
   } catch {
@@ -869,127 +936,251 @@ async function loadTrailer(movie: Movie, retry = false) {
     trailerChecked.delete(movie.id);
   } finally {
     trailerLoading.delete(movie.id);
+
     if (selectedMovie?.id === movie.id) render();
   }
 }
 
 function showToast(message: string) {
   const toast = document.querySelector<HTMLDivElement>('#toast');
+
   if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add('toast-visible');
-  window.setTimeout(() => toast.classList.remove('toast-visible'), 2400);
+
+  window.setTimeout(
+    () => toast.classList.remove('toast-visible'),
+    2400
+  );
 }
 
 function bindEvents() {
   document.querySelector('[data-find-trailer]')?.addEventListener('click', () => {
     if (selectedMovie) void loadTrailer(selectedMovie, true);
   });
+
   document.querySelector('[data-play-trailer]')?.addEventListener('click', () => {
     if (!selectedMovie) return;
+
     const trailer = trailerCache.get(selectedMovie.id);
+
     if (trailer) {
       playingTrailerId = selectedMovie.id;
       render();
       return;
     }
-    if (!trailerLoading.has(selectedMovie.id)) void loadTrailer(selectedMovie, true);
-    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedMovie.title + ' ' + selectedMovie.year + ' official trailer')}`, '_blank', 'noopener,noreferrer');
+
+    if (!trailerLoading.has(selectedMovie.id)) {
+      void loadTrailer(selectedMovie, true);
+    }
+
+    window.open(
+      `https://www.youtube.com/results?search_query=${encodeURIComponent(selectedMovie.title + ' ' + selectedMovie.year + ' official trailer')}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
   });
+
   document.querySelector('[data-stop-trailer]')?.addEventListener('click', () => {
     playingTrailerId = null;
     render();
   });
+
   const sidebar = document.querySelector<HTMLElement>('#genre-sidebar');
   const scrim = document.querySelector<HTMLElement>('#sidebar-scrim');
-  const menuButton = document.querySelector<HTMLButtonElement>('#genre-sidebar-toggle');
-  const closeSidebar = () => { sidebar?.classList.remove('is-open'); scrim?.classList.remove('is-visible'); menuButton?.setAttribute('aria-expanded', 'false'); document.body.classList.remove('sidebar-open'); };
-  menuButton?.addEventListener('click', () => { const opening = !sidebar?.classList.contains('is-open'); sidebar?.classList.toggle('is-open', opening); scrim?.classList.toggle('is-visible', opening); menuButton.setAttribute('aria-expanded', String(opening)); document.body.classList.toggle('sidebar-open', opening); });
+  const menuButton =
+    document.querySelector<HTMLButtonElement>('#genre-sidebar-toggle');
+
+  const closeSidebar = () => {
+    sidebar?.classList.remove('is-open');
+    scrim?.classList.remove('is-visible');
+    menuButton?.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('sidebar-open');
+  };
+
+  menuButton?.addEventListener('click', () => {
+    const opening = !sidebar?.classList.contains('is-open');
+
+    sidebar?.classList.toggle('is-open', opening);
+    scrim?.classList.toggle('is-visible', opening);
+    menuButton.setAttribute('aria-expanded', String(opening));
+    document.body.classList.toggle('sidebar-open', opening);
+  });
+
   document.querySelector('#sidebar-close')?.addEventListener('click', closeSidebar);
   scrim?.addEventListener('click', closeSidebar);
-  document.querySelector('#movie-genres-toggle')?.addEventListener('click', () => { const list = document.querySelector<HTMLElement>('#sidebar-genre-list'); const button = document.querySelector<HTMLButtonElement>('#movie-genres-toggle'); const expanded = button?.getAttribute('aria-expanded') !== 'true'; button?.setAttribute('aria-expanded', String(expanded)); list?.classList.toggle('is-collapsed', !expanded); });
-  document.querySelectorAll<HTMLButtonElement>('[data-sidebar-genre]').forEach(button => button.addEventListener('click', () => { activeGenre = button.dataset.sidebarGenre || 'All'; query = ''; closeSidebar(); render(); document.querySelector('#trending')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
-  document.querySelector('[data-sidebar-home]')?.addEventListener('click', () => { activeGenre = 'All'; query = ''; closeSidebar(); render(); document.querySelector('#trending')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
-  document.querySelectorAll<HTMLElement>('[data-sidebar-close]').forEach(link => link.addEventListener('click', closeSidebar));
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar(); });
+
+  document.querySelector('#movie-genres-toggle')?.addEventListener('click', () => {
+    const list = document.querySelector<HTMLElement>('#sidebar-genre-list');
+    const button =
+      document.querySelector<HTMLButtonElement>('#movie-genres-toggle');
+
+    const expanded = button?.getAttribute('aria-expanded') !== 'true';
+
+    button?.setAttribute('aria-expanded', String(expanded));
+    list?.classList.toggle('is-collapsed', !expanded);
+  });
+
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-sidebar-genre]')
+    .forEach(button =>
+      button.addEventListener('click', () => {
+        activeGenre = button.dataset.sidebarGenre || 'All';
+        query = '';
+        closeSidebar();
+        render();
+
+        document
+          .querySelector('#trending')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      })
+    );
+
+  document.querySelector('[data-sidebar-home]')?.addEventListener('click', () => {
+    activeGenre = 'All';
+    query = '';
+    closeSidebar();
+    render();
+
+    document
+      .querySelector('#trending')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document
+    .querySelectorAll<HTMLElement>('[data-sidebar-close]')
+    .forEach(link => link.addEventListener('click', closeSidebar));
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeSidebar();
+  });
+
   document
     .querySelector<HTMLFormElement>('#search-form')
     ?.addEventListener('submit', event => {
       event.preventDefault();
+
       query =
         document
           .querySelector<HTMLInputElement>('#movie-search')
           ?.value.trim() || '';
+
       render();
+
       document
         .querySelector('#trending')
         ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
   document
     .querySelector<HTMLInputElement>('#movie-search')
     ?.addEventListener('input', event => {
       const input = event.currentTarget as HTMLInputElement;
       const cursor = input.selectionStart;
+
       query = input.value;
+
       const grid = document.querySelector<HTMLDivElement>('#movie-grid');
       const list = visibleMovies();
-      if (grid)
+
+      if (grid) {
         grid.innerHTML = list.length
           ? list.map(card).join('')
           : '<div class="empty-state"><span>⌕</span><h3>No films found</h3><p>Try another title or choose a different genre.</p><button class="reset-search" id="reset-search">Clear filters</button></div>';
+      }
+
+      /* Keep movie cards working after live search updates. */
       document
-        .querySelectorAll<HTMLButtonElement>('.movie-card')
-        .forEach(button =>
-          button.addEventListener('click', () =>
-            openMovie(Number(button.dataset.movie))
-          )
+        .querySelectorAll<HTMLAnchorElement>('.movie-card')
+        .forEach(link =>
+          link.addEventListener('click', event => {
+            if (
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey
+            ) {
+              return;
+            }
+
+            event.preventDefault();
+            openMovie(Number(link.dataset.movie));
+          })
         );
+
       document.querySelector('#reset-search')?.addEventListener('click', () => {
         query = '';
         activeGenre = 'All';
         render();
       });
+
       input.focus();
-      if (cursor !== null) input.setSelectionRange(cursor, cursor);
+
+      if (cursor !== null) {
+        input.setSelectionRange(cursor, cursor);
+      }
     });
+
   document.querySelectorAll<HTMLButtonElement>('[data-genre]').forEach(button =>
     button.addEventListener('click', () => {
       activeGenre = button.dataset.genre || 'All';
       render();
     })
   );
+
+  /* Open movie details while preserving normal link behaviour for new tabs. */
   document
-    .querySelectorAll<HTMLButtonElement>('[data-movie]')
-    .forEach(button =>
-      button.addEventListener('click', () =>
-        openMovie(Number(button.dataset.movie))
-      )
+    .querySelectorAll<HTMLAnchorElement>('[data-movie]')
+    .forEach(link =>
+      link.addEventListener('click', event => {
+        if (
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+        openMovie(Number(link.dataset.movie));
+      })
     );
+
   document.querySelector('#reset-search')?.addEventListener('click', () => {
     query = '';
     activeGenre = 'All';
     render();
   });
+
   document.querySelector('#watchlist-toggle')?.addEventListener('click', () => {
     if (!saved.size) {
       showToast('Open a movie and add it to your list.');
       return;
     }
+
     activeGenre = 'All';
     query = '';
     render();
+
     showToast(
       `You have ${saved.size} saved ${saved.size === 1 ? 'film' : 'films'} in this session.`
     );
   });
+
   document.querySelector('#view-all')?.addEventListener('click', () => {
     activeGenre = 'All';
     query = '';
     render();
   });
+
   document.querySelector('#modal-close')?.addEventListener('click', () => {
     closeMovie();
   });
+
   document
     .querySelector('#modal-backdrop')
     ?.addEventListener('click', event => {
@@ -997,42 +1188,60 @@ function bindEvents() {
         closeMovie();
       }
     });
+
   document.querySelector('#save-movie')?.addEventListener('click', () => {
     if (!selectedMovie) return;
-    if (saved.has(selectedMovie.id)) saved.delete(selectedMovie.id);
-    else saved.add(selectedMovie.id);
+
+    if (saved.has(selectedMovie.id)) {
+      saved.delete(selectedMovie.id);
+    } else {
+      saved.add(selectedMovie.id);
+    }
+
     const movie = selectedMovie;
+
     render();
+
     selectedMovie = movie;
+
     const backdrop = document.querySelector('#modal-backdrop');
+
     if (backdrop) {
       const old = document.querySelector('#save-movie');
-      if (old)
+
+      if (old) {
         old.textContent = saved.has(movie.id)
           ? '✓ Added to my list'
           : '+ Add to my list';
+      }
     }
+
     document.querySelector('.watchlist-button b')!.textContent = String(
       saved.size
     );
+
     showToast(
       saved.has(movie.id)
         ? 'Added to your list for this session.'
         : 'Removed from your list.'
     );
   });
+
   document.querySelector('#about-link')?.addEventListener('click', event => {
     event.preventDefault();
     showToast('An independent movie discovery concept.');
   });
+
   document.querySelector('#privacy-link')?.addEventListener('click', event => {
     event.preventDefault();
     showToast('Prototype only: no accounts or personal data collection.');
   });
+
   document.querySelector('#contact-link')?.addEventListener('click', event => {
     event.preventDefault();
     showToast('Contact details will be added before public launch.');
   });
+
   document.addEventListener(
     'keydown',
     function escapeModal(event) {
@@ -1044,36 +1253,76 @@ function bindEvents() {
   );
 }
 
-function movieSlug(movie: Movie) {
-  return movie.title.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
+/* Update the browser URL whenever a movie is opened or closed. */
 function syncMovieRoute(movie: Movie | null, replace = false) {
   const path = movie ? `/movie/${movieSlug(movie)}` : '/';
+
   if (window.location.pathname !== path) {
-    if (replace) history.replaceState({}, '', path); else history.pushState({}, '', path);
+    if (replace) {
+      history.replaceState({}, '', path);
+    } else {
+      history.pushState({}, '', path);
+    }
   }
 }
+
 function openMovie(id: number, updateRoute = true) {
   selectedMovie = movies.find(movie => movie.id === id) || null;
   playingTrailerId = null;
-  if (selectedMovie && updateRoute) syncMovieRoute(selectedMovie);
+
+  if (selectedMovie && updateRoute) {
+    syncMovieRoute(selectedMovie);
+  }
+
   render();
-  if (selectedMovie) void loadTrailer(selectedMovie);
+
+  if (selectedMovie) {
+    void loadTrailer(selectedMovie);
+  }
 }
+
 function closeMovie(updateRoute = true) {
   selectedMovie = null;
   playingTrailerId = null;
-  if (updateRoute) syncMovieRoute(null);
+
+  if (updateRoute) {
+    syncMovieRoute(null);
+  }
+
   render();
 }
+
+/* Handle browser Back and Forward navigation. */
 window.addEventListener('popstate', () => {
   const slug = window.location.pathname.match(/^\/movie\/([^/]+)\/?$/)?.[1];
-  const movie = slug ? movies.find(item => movieSlug(item) === slug) : null;
-  if (movie) openMovie(movie.id, false); else closeMovie(false);
+
+  const movie = slug
+    ? movies.find(item => movieSlug(item) === slug)
+    : null;
+
+  if (movie) {
+    openMovie(movie.id, false);
+  } else {
+    closeMovie(false);
+  }
 });
-const initialSlug = window.location.pathname.match(/^\/movie\/([^/]+)\/?$/)?.[1];
-const initialMovie = initialSlug ? movies.find(item => movieSlug(item) === initialSlug) : null;
-if (initialMovie) selectedMovie = initialMovie;
+
+/* Open the correct movie when someone visits a shared movie URL directly. */
+const initialSlug =
+  window.location.pathname.match(/^\/movie\/([^/]+)\/?$/)?.[1];
+
+const initialMovie = initialSlug
+  ? movies.find(item => movieSlug(item) === initialSlug)
+  : null;
+
+if (initialMovie) {
+  selectedMovie = initialMovie;
+}
+
 render();
-if (selectedMovie) void loadTrailer(selectedMovie);
+
+if (selectedMovie) {
+  void loadTrailer(selectedMovie);
+}
+
 void loadOfficialPosters();
