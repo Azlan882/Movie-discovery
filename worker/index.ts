@@ -1,3 +1,4 @@
+
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
   YOUTUBE_API_KEY?: string;
@@ -26,7 +27,9 @@ const relevant = (movie: string, candidate: string) => {
   const words = normalize(movie).split(' ').filter(x => x && !ignore.has(x));
   const c = normalize(candidate);
   const n = words.filter(w => c.includes(w)).length;
-  return words.length > 0 && n >= Math.min(2, words.length) && n / words.length >= 0.6;
+  return words.length > 0 &&
+    n >= Math.min(2, words.length) &&
+    n / words.length >= 0.6;
 };
 
 const json = (data: unknown, status = 200) =>
@@ -67,6 +70,74 @@ const wikiHeaders = {
   'User-Agent': 'MovieDiscovery/1.0 (https://movie-discovery.azlanmalik774.workers.dev/)',
   'Api-User-Agent': 'MovieDiscovery/1.0 (https://movie-discovery.azlanmalik774.workers.dev/)'
 };
+
+// Find a poster for an individual movie's social preview
+async function findMoviePoster(title: string): Promise<string> {
+  const key = normalize(title);
+  const cached = posterCache.get(key);
+
+  if (cached && cached.expires > Date.now()) {
+    return cached.url;
+  }
+
+  try {
+    const params = new URLSearchParams({
+      action: 'query',
+      format: 'json',
+      prop: 'pageimages',
+      piprop: 'thumbnail',
+      pithumbsize: '1200',
+      pilicense: 'any',
+      redirects: '1',
+      titles: title
+    });
+
+    const r = await fetch(
+      'https://en.wikipedia.org/w/api.php?' + params,
+      { headers: wikiHeaders }
+    );
+
+    if (r.ok) {
+      const data: any = await r.json();
+      const pages = Object.values(data.query?.pages || {}) as any[];
+
+      const page = pages.find(
+        p => normalize(p.title || '') === key
+      );
+
+      let imageUrl = page?.thumbnail?.source;
+
+      // Fallback to Wikipedia summary API
+      if (!imageUrl) {
+        const fallback = await fetch(
+          'https://en.wikipedia.org/api/rest_v1/page/summary/' +
+          encodeURIComponent(title.replace(/ /g, '_')),
+          { headers: wikiHeaders }
+        );
+
+        if (fallback.ok) {
+          const data: any = await fallback.json();
+          imageUrl =
+            data.originalimage?.source ||
+            data.thumbnail?.source;
+        }
+      }
+
+      if (imageUrl && imageUrl.startsWith('https://')) {
+        posterCache.set(key, {
+          expires: Date.now() + 86400000,
+          url: imageUrl
+        });
+
+        return imageUrl;
+      }
+    }
+  } catch {
+    // Continue without a poster if lookup fails
+  }
+
+  return '';
+}
 
 async function posterApi(body: any) {
   const list = Array.isArray(body?.movies) ? body.movies : [];
@@ -130,7 +201,6 @@ async function posterApi(body: any) {
 
         let url = page?.thumbnail?.source;
 
-        // Try Wikipedia summary API if no thumbnail was found
         if (!url) {
           try {
             const q = await fetch(
@@ -144,7 +214,7 @@ async function posterApi(body: any) {
               url = d.originalimage?.source || d.thumbnail?.source;
             }
           } catch {
-            // Continue if the fallback lookup fails
+            // Continue if fallback lookup fails
           }
         }
 
@@ -161,7 +231,7 @@ async function posterApi(body: any) {
         }
       }
     } catch {
-      // Continue with the remaining batches
+      // Continue with remaining batches
     }
   }
 
@@ -292,12 +362,11 @@ export default {
       }
     }
 
-    // Individual movie SEO pages
+    // Individual movie SEO and social preview pages
     const match = url.pathname.match(/^\/movie\/([^/]+)\/?$/);
 
     if (match) {
       const movies = await readMovies(env, request);
-
       const movie = movies.find(m => slug(m.title) === match[1]);
 
       if (!movie) {
@@ -311,7 +380,11 @@ export default {
 
       const canonical = `${url.origin}/movie/${slug(movie.title)}`;
       const title = `${movie.title} (${movie.year}) — Movie Discovery`;
-      const description = `${movie.tagline} ${movie.synopsis}`.slice(0, 300);
+      const description =
+        `${movie.tagline} ${movie.synopsis}`.slice(0, 300);
+
+      // Retrieve the poster for WhatsApp, Facebook and social previews
+      const poster = await findMoviePoster(movie.title);
 
       const ld = {
         '@context': 'https://schema.org',
@@ -321,6 +394,7 @@ export default {
         genre: movie.genre,
         duration: movie.runtime,
         description: movie.synopsis,
+        image: poster || undefined,
         actor: movie.cast.map(name => ({
           '@type': 'Person',
           name
@@ -335,14 +409,34 @@ export default {
 
       let page = await baseResponse.text();
 
+      const imageTags = poster
+        ? `
+<meta property="og:image" content="${esc(poster)}">
+<meta property="og:image:secure_url" content="${esc(poster)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(movie.title)} movie poster">
+<meta name="twitter:image" content="${esc(poster)}">
+<meta name="twitter:image:alt" content="${esc(movie.title)} movie poster">
+`
+        : '';
+
       const head = `
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${canonical}">
+<link rel="canonical" href="${esc(canonical)}">
+
 <meta property="og:type" content="video.movie">
+<meta property="og:site_name" content="Movie Discovery">
+<meta property="og:url" content="${esc(canonical)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta name="twitter:card" content="summary">
+${imageTags}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+
 <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>
 `;
 
