@@ -1,0 +1,91 @@
+[
+  {
+    "name": "Search real movie titles and open details",
+    "sanity": true,
+    "viewport": "mobile",
+    "covers": [
+      "curated real-movie catalogue",
+      "movie search",
+      "movie detail modal",
+      "original synopsis and cast",
+      "server-side movie poster lookup",
+      "official poster images where available",
+      "illustrated poster fallback when no image is available"
+    ],
+    "description": "Verifies visitors can search for a real film and read its curated details.",
+    "steps": [
+      "Search for Interstellar",
+      "Submit the search",
+      "Open the Interstellar card"
+    ],
+    "expected": "Interstellar appears with its real release year, cast, original synopsis, trailer control and external reference links. Its official poster image appears when the film page provides one; otherwise the illustrated fallback remains. No demo-rating claim is shown."
+  },
+  {
+    "name": "Filter the real catalogue by genre",
+    "viewport": "desktop",
+    "covers": [
+      "genre chips",
+      "expandable genre sidebar",
+      "real movie genre filtering"
+    ],
+    "description": "Verifies the expanded catalogue has at least five films in every existing genre and genre filtering still works.",
+    "steps": [
+      "Open Browse",
+      "Select Mystery from Movie Genres and count the visible film cards",
+      "Select Animation from Movie Genres",
+      "Review the filtered cards"
+    ],
+    "expected": "Mystery has at least five films including Knives Out, Se7en, Zodiac, Memento and Gone Girl; Animation includes Spirited Away, Spider-Man: Into the Spider-Verse, Toy Story, Coco and WALL-E, with unrelated genres filtered out."
+  },
+  {
+    "name": "Open movie research and watch links",
+    "viewport": "mobile",
+    "covers": [
+      "IMDb search link",
+      "Wikipedia search link",
+      "YouTube trailer search link",
+      "JustWatch availability search link"
+    ],
+    "description": "Verifies movie details include external research and availability search links.",
+    "steps": [
+      "Open The Dark Knight",
+      "Find the Explore this film links",
+      "Open IMDb, Wikipedia, YouTube trailers and JustWatch links in separate tabs"
+    ],
+    "expected": "Each link opens a search for the selected real movie; streaming is presented as a search, not a guaranteed provider listing."
+  },
+  {
+    "name": "Find and play a YouTube trailer or see fallback",
+    "viewport": "mobile",
+    "covers": [
+      "server-side YouTube trailer lookup",
+      "thumbnail playback",
+      "embedded YouTube player",
+      "YouTube connection prewarming",
+      "no-match fallback"
+    ],
+    "description": "Verifies the trailer feature uses the selected real movie title and year and provides an honest fallback.",
+    "steps": [
+      "Open Arrival",
+      "Immediately check that a YouTube trailer link is available while embedded lookup runs",
+      "Play the thumbnail if a match appears, or use the direct YouTube fallback"
+    ],
+    "expected": "The movie preview shows only a thumbnail or fallback movie artwork with a centered play icon, without trailer headings, captions, or status text; a relevant embeddable video plays in-page when a match is returned."
+  },
+  {
+    "name": "Save a curated film to the session watchlist",
+    "viewport": "desktop",
+    "covers": [
+      "movie details modal",
+      "session watchlist",
+      "watchlist count"
+    ],
+    "description": "Verifies the existing watchlist still works with real catalogue records.",
+    "steps": [
+      "Open Parasite",
+      "Choose Add to my list",
+      "Verify the saved state and header count"
+    ],
+    "expected": "Parasite is marked saved and the watchlist count increases for the current session."
+  }
+]

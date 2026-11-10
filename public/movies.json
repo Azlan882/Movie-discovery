@@ -1,0 +1,828 @@
+[
+  {
+    "id": 101,
+    "title": "The Shawshank Redemption",
+    "year": 1994,
+    "genre": "Drama",
+    "runtime": "2h 22m",
+    "tagline": "Hope can set you free.",
+    "synopsis": "A quiet banker sentenced to life in prison builds an unexpected friendship and holds on to hope through decades behind bars.",
+    "mood": "slate",
+    "cast": [
+      "Tim Robbins",
+      "Morgan Freeman",
+      "Bob Gunton"
+    ],
+    "featured": true
+  },
+  {
+    "id": 102,
+    "title": "The Dark Knight",
+    "year": 2008,
+    "genre": "Action",
+    "runtime": "2h 32m",
+    "tagline": "Why so serious?",
+    "synopsis": "Batman faces a criminal mastermind whose escalating attacks force Gotham to confront the cost of fighting chaos.",
+    "mood": "forest",
+    "cast": [
+      "Christian Bale",
+      "Heath Ledger",
+      "Aaron Eckhart"
+    ]
+  },
+  {
+    "id": 103,
+    "title": "Inception",
+    "year": 2010,
+    "genre": "Sci-Fi",
+    "runtime": "2h 28m",
+    "tagline": "Your mind is the scene of the crime.",
+    "synopsis": "A specialist who steals secrets from dreams is offered a chance to return home if he can plant an idea deep inside a target’s mind.",
+    "mood": "blue",
+    "cast": [
+      "Leonardo DiCaprio",
+      "Joseph Gordon-Levitt",
+      "Elliot Page"
+    ]
+  },
+  {
+    "id": 104,
+    "title": "Interstellar",
+    "year": 2014,
+    "genre": "Sci-Fi",
+    "runtime": "2h 49m",
+    "tagline": "Mankind was born on Earth. It was never meant to die here.",
+    "synopsis": "As Earth becomes harder to inhabit, a pilot joins a mission through a wormhole to search for a future for humanity.",
+    "mood": "violet",
+    "cast": [
+      "Matthew McConaughey",
+      "Anne Hathaway",
+      "Jessica Chastain"
+    ]
+  },
+  {
+    "id": 105,
+    "title": "The Matrix",
+    "year": 1999,
+    "genre": "Sci-Fi",
+    "runtime": "2h 16m",
+    "tagline": "Reality is only the beginning.",
+    "synopsis": "A computer programmer discovers that the world he knows is a constructed reality and joins a rebellion against its controllers.",
+    "mood": "teal",
+    "cast": [
+      "Keanu Reeves",
+      "Carrie-Anne Moss",
+      "Laurence Fishburne"
+    ]
+  },
+  {
+    "id": 106,
+    "title": "Parasite",
+    "year": 2019,
+    "genre": "Thriller",
+    "runtime": "2h 12m",
+    "tagline": "Look closer.",
+    "synopsis": "A struggling family gradually enters the lives of a wealthy household, setting off a chain of events that exposes sharp class divisions.",
+    "mood": "forest",
+    "cast": [
+      "Song Kang-ho",
+      "Lee Sun-kyun",
+      "Cho Yeo-jeong"
+    ]
+  },
+  {
+    "id": 107,
+    "title": "Spirited Away",
+    "year": 2001,
+    "genre": "Animation",
+    "runtime": "2h 05m",
+    "tagline": "The tunnel led Chihiro to a mysterious town.",
+    "synopsis": "A young girl enters a strange spirit world and must find courage and ingenuity to rescue her parents and return home.",
+    "mood": "rose",
+    "cast": [
+      "Rumi Hiiragi",
+      "Miyu Irino",
+      "Mari Natsuki"
+    ]
+  },
+  {
+    "id": 108,
+    "title": "The Godfather",
+    "year": 1972,
+    "genre": "Crime",
+    "runtime": "2h 55m",
+    "tagline": "An offer you can’t refuse.",
+    "synopsis": "The aging head of a crime family tries to protect his empire while his reluctant son is drawn into a violent world of loyalty and power.",
+    "mood": "amber",
+    "cast": [
+      "Marlon Brando",
+      "Al Pacino",
+      "James Caan"
+    ]
+  },
+  {
+    "id": 109,
+    "title": "Pulp Fiction",
+    "year": 1994,
+    "genre": "Crime",
+    "runtime": "2h 34m",
+    "tagline": "You won’t know the facts until you’ve seen the fiction.",
+    "synopsis": "Interlocking stories of criminals, a boxer and two hitmen unfold in a darkly comic portrait of chance and consequence in Los Angeles.",
+    "mood": "sunset",
+    "cast": [
+      "John Travolta",
+      "Samuel L. Jackson",
+      "Uma Thurman"
+    ]
+  },
+  {
+    "id": 110,
+    "title": "Everything Everywhere All at Once",
+    "year": 2022,
+    "genre": "Sci-Fi",
+    "runtime": "2h 19m",
+    "tagline": "The universe is so much bigger than you realize.",
+    "synopsis": "An overwhelmed laundromat owner discovers that she may be the key to saving the multiverse while trying to reconnect with her family.",
+    "mood": "violet",
+    "cast": [
+      "Michelle Yeoh",
+      "Stephanie Hsu",
+      "Ke Huy Quan"
+    ]
+  },
+  {
+    "id": 111,
+    "title": "Get Out",
+    "year": 2017,
+    "genre": "Horror",
+    "runtime": "1h 44m",
+    "tagline": "Just because you’re invited, doesn’t mean you’re welcome.",
+    "synopsis": "A photographer visits his girlfriend’s family estate and notices unsettling behaviour that reveals a much more sinister situation.",
+    "mood": "forest",
+    "cast": [
+      "Daniel Kaluuya",
+      "Allison Williams",
+      "Bradley Whitford"
+    ]
+  },
+  {
+    "id": 112,
+    "title": "A Quiet Place",
+    "year": 2018,
+    "genre": "Horror",
+    "runtime": "1h 30m",
+    "tagline": "If they hear you, they hunt you.",
+    "synopsis": "A family struggles to survive in silence in a world where mysterious creatures hunt by sound.",
+    "mood": "slate",
+    "cast": [
+      "Emily Blunt",
+      "John Krasinski",
+      "Millicent Simmonds"
+    ]
+  },
+  {
+    "id": 113,
+    "title": "Knives Out",
+    "year": 2019,
+    "genre": "Mystery",
+    "runtime": "2h 10m",
+    "tagline": "Everyone has a motive. No one has a clue.",
+    "synopsis": "A sharp detective investigates the death of a celebrated mystery novelist, whose eccentric relatives all have secrets of their own.",
+    "mood": "amber",
+    "cast": [
+      "Daniel Craig",
+      "Ana de Armas",
+      "Chris Evans"
+    ]
+  },
+  {
+    "id": 114,
+    "title": "Arrival",
+    "year": 2016,
+    "genre": "Sci-Fi",
+    "runtime": "1h 56m",
+    "tagline": "Why are they here?",
+    "synopsis": "A linguist is recruited to communicate with visitors from space, racing to understand their language before global tensions spiral.",
+    "mood": "blue",
+    "cast": [
+      "Amy Adams",
+      "Jeremy Renner",
+      "Forest Whitaker"
+    ]
+  },
+  {
+    "id": 115,
+    "title": "Mad Max: Fury Road",
+    "year": 2015,
+    "genre": "Action",
+    "runtime": "2h 00m",
+    "tagline": "What a lovely day.",
+    "synopsis": "In a brutal desert wasteland, a drifter and a rebel driver risk everything in a high-speed escape from a tyrant.",
+    "mood": "sunset",
+    "cast": [
+      "Tom Hardy",
+      "Charlize Theron",
+      "Nicholas Hoult"
+    ]
+  },
+  {
+    "id": 116,
+    "title": "Spider-Man: Into the Spider-Verse",
+    "year": 2018,
+    "genre": "Animation",
+    "runtime": "1h 57m",
+    "tagline": "Enter a universe where more than one wears the mask.",
+    "synopsis": "Brooklyn teenager Miles Morales discovers his powers and meets Spider-heroes from other dimensions who help him find his own path.",
+    "mood": "rose",
+    "cast": [
+      "Shameik Moore",
+      "Jake Johnson",
+      "Hailee Steinfeld"
+    ]
+  },
+  {
+    "id": 117,
+    "title": "Dune: Part Two",
+    "year": 2024,
+    "genre": "Adventure",
+    "runtime": "2h 46m",
+    "tagline": "Long live the fighters.",
+    "synopsis": "Paul Atreides joins Chani and the Fremen while facing a choice between love and the fate of the universe.",
+    "mood": "amber",
+    "cast": [
+      "Timothée Chalamet",
+      "Zendaya",
+      "Rebecca Ferguson"
+    ]
+  },
+  {
+    "id": 118,
+    "title": "Oppenheimer",
+    "year": 2023,
+    "genre": "Drama",
+    "runtime": "3h 00m",
+    "tagline": "The world forever changes.",
+    "synopsis": "A portrait of physicist J. Robert Oppenheimer and the scientific, political and personal consequences of the Manhattan Project.",
+    "mood": "slate",
+    "cast": [
+      "Cillian Murphy",
+      "Emily Blunt",
+      "Robert Downey Jr."
+    ]
+  },
+  {
+    "id": 119,
+    "title": "Barbie",
+    "year": 2023,
+    "genre": "Comedy",
+    "runtime": "1h 54m",
+    "tagline": "She’s everything. He’s just Ken.",
+    "synopsis": "A seemingly perfect life in Barbie Land takes an unexpected turn, sending Barbie and Ken on a journey into the real world.",
+    "mood": "rose",
+    "cast": [
+      "Margot Robbie",
+      "Ryan Gosling",
+      "America Ferrera"
+    ]
+  },
+  {
+    "id": 120,
+    "title": "Top Gun: Maverick",
+    "year": 2022,
+    "genre": "Action",
+    "runtime": "2h 10m",
+    "tagline": "Feel the need for speed.",
+    "synopsis": "A veteran naval aviator returns to train an elite group of pilots for a dangerous mission while confronting his past.",
+    "mood": "blue",
+    "cast": [
+      "Tom Cruise",
+      "Miles Teller",
+      "Jennifer Connelly"
+    ]
+  },
+  {
+    "id": 121,
+    "title": "The Grand Budapest Hotel",
+    "year": 2014,
+    "genre": "Comedy",
+    "runtime": "1h 39m",
+    "tagline": "A legendary concierge. A priceless painting. A most unusual adventure.",
+    "synopsis": "A hotel concierge and his young protégé become entangled in a disputed inheritance and a series of increasingly absurd events.",
+    "mood": "rose",
+    "cast": [
+      "Ralph Fiennes",
+      "Tony Revolori",
+      "Saoirse Ronan"
+    ]
+  },
+  {
+    "id": 122,
+    "title": "Whiplash",
+    "year": 2014,
+    "genre": "Drama",
+    "runtime": "1h 47m",
+    "tagline": "The road to greatness can take you to the edge.",
+    "synopsis": "An ambitious young drummer enters a demanding conservatory and is pushed to extremes by a ruthless instructor.",
+    "mood": "amber",
+    "cast": [
+      "Miles Teller",
+      "J. K. Simmons",
+      "Paul Reiser"
+    ]
+  },
+  {
+    "id": 123,
+    "title": "The Truman Show",
+    "year": 1998,
+    "genre": "Drama",
+    "runtime": "1h 43m",
+    "tagline": "On the air. Unaware.",
+    "synopsis": "A cheerful insurance salesman begins to suspect that his picture-perfect life is being watched and controlled by unseen forces.",
+    "mood": "teal",
+    "cast": [
+      "Jim Carrey",
+      "Laura Linney",
+      "Ed Harris"
+    ]
+  },
+  {
+    "id": 124,
+    "title": "Jurassic Park",
+    "year": 1993,
+    "genre": "Adventure",
+    "runtime": "2h 07m",
+    "tagline": "An adventure 65 million years in the making.",
+    "synopsis": "Scientists visit a theme park populated by cloned dinosaurs, but a breakdown in security turns the demonstration into a fight for survival.",
+    "mood": "forest",
+    "cast": [
+      "Sam Neill",
+      "Laura Dern",
+      "Jeff Goldblum"
+    ]
+  },
+  {
+    "id": 125,
+    "title": "Gladiator",
+    "year": 2000,
+    "genre": "Action",
+    "runtime": "2h 35m",
+    "tagline": "What we do in life echoes in eternity.",
+    "synopsis": "A betrayed Roman general is forced into the arena, where he seeks justice against the emperor who destroyed his life.",
+    "mood": "amber",
+    "cast": [
+      "Russell Crowe",
+      "Joaquin Phoenix",
+      "Connie Nielsen"
+    ]
+  },
+  {
+    "id": 126,
+    "title": "John Wick",
+    "year": 2014,
+    "genre": "Action",
+    "runtime": "1h 41m",
+    "tagline": "A man of focus, commitment and sheer will.",
+    "synopsis": "A retired assassin returns to the criminal underworld after a personal loss draws him back into a world he tried to leave behind.",
+    "mood": "slate",
+    "cast": [
+      "Keanu Reeves",
+      "Michael Nyqvist",
+      "Alfie Allen"
+    ]
+  },
+  {
+    "id": 127,
+    "title": "Die Hard",
+    "year": 1988,
+    "genre": "Action",
+    "runtime": "2h 12m",
+    "tagline": "Twelve terrorists. One cop. The odds are against John McClane.",
+    "synopsis": "A New York detective visiting Los Angeles fights to save hostages when a Christmas party in a skyscraper is seized by armed criminals.",
+    "mood": "blue",
+    "cast": [
+      "Bruce Willis",
+      "Alan Rickman",
+      "Bonnie Bedelia"
+    ]
+  },
+  {
+    "id": 128,
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "year": 2001,
+    "genre": "Adventure",
+    "runtime": "2h 58m",
+    "tagline": "One ring to rule them all.",
+    "synopsis": "A young hobbit begins a perilous journey to destroy a powerful ring before its dark creator can reclaim it.",
+    "mood": "forest",
+    "cast": [
+      "Elijah Wood",
+      "Ian McKellen",
+      "Viggo Mortensen"
+    ]
+  },
+  {
+    "id": 129,
+    "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+    "year": 2003,
+    "genre": "Adventure",
+    "runtime": "2h 23m",
+    "tagline": "Prepare to be blown out of the water.",
+    "synopsis": "A blacksmith teams up with an eccentric pirate to rescue a kidnapped governor’s daughter from a cursed crew.",
+    "mood": "teal",
+    "cast": [
+      "Johnny Depp",
+      "Geoffrey Rush",
+      "Keira Knightley"
+    ]
+  },
+  {
+    "id": 130,
+    "title": "Raiders of the Lost Ark",
+    "year": 1981,
+    "genre": "Adventure",
+    "runtime": "1h 55m",
+    "tagline": "The return of the great adventure.",
+    "synopsis": "Archaeologist Indiana Jones races against Nazi agents to find a legendary religious artifact before they can use its power.",
+    "mood": "sunset",
+    "cast": [
+      "Harrison Ford",
+      "Karen Allen",
+      "Paul Freeman"
+    ]
+  },
+  {
+    "id": 131,
+    "title": "Toy Story",
+    "year": 1995,
+    "genre": "Animation",
+    "runtime": "1h 21m",
+    "tagline": "The adventure takes off when toys come to life.",
+    "synopsis": "A cowboy toy feels threatened when a flashy space ranger becomes the favourite in their owner’s bedroom.",
+    "mood": "blue",
+    "cast": [
+      "Tom Hanks",
+      "Tim Allen",
+      "Don Rickles"
+    ]
+  },
+  {
+    "id": 132,
+    "title": "Coco",
+    "year": 2017,
+    "genre": "Animation",
+    "runtime": "1h 45m",
+    "tagline": "The celebration of a lifetime.",
+    "synopsis": "An aspiring young musician journeys to the Land of the Dead to uncover his family’s history and understand its forgotten stories.",
+    "mood": "sunset",
+    "cast": [
+      "Anthony Gonzalez",
+      "Gael García Bernal",
+      "Benjamin Bratt"
+    ]
+  },
+  {
+    "id": 133,
+    "title": "WALL-E",
+    "year": 2008,
+    "genre": "Animation",
+    "runtime": "1h 38m",
+    "tagline": "After 700 years of doing what he was built for, he’ll discover what he was meant for.",
+    "synopsis": "A lonely waste-collecting robot finds a new purpose after meeting a probe sent to search a deserted Earth for signs of life.",
+    "mood": "amber",
+    "cast": [
+      "Ben Burtt",
+      "Elissa Knight",
+      "Jeff Garlin"
+    ]
+  },
+  {
+    "id": 134,
+    "title": "Superbad",
+    "year": 2007,
+    "genre": "Comedy",
+    "runtime": "1h 53m",
+    "tagline": "Come and see how it ends.",
+    "synopsis": "Two inseparable high-school friends try to make the most of one party before graduation sends them in different directions.",
+    "mood": "rose",
+    "cast": [
+      "Jonah Hill",
+      "Michael Cera",
+      "Christopher Mintz-Plasse"
+    ]
+  },
+  {
+    "id": 135,
+    "title": "Groundhog Day",
+    "year": 1993,
+    "genre": "Comedy",
+    "runtime": "1h 41m",
+    "tagline": "He’s having the worst day of his life… over and over again.",
+    "synopsis": "A cynical weatherman finds himself reliving the same small-town day and must rethink how he treats everyone around him.",
+    "mood": "teal",
+    "cast": [
+      "Bill Murray",
+      "Andie MacDowell",
+      "Chris Elliott"
+    ]
+  },
+  {
+    "id": 136,
+    "title": "Mean Girls",
+    "year": 2004,
+    "genre": "Comedy",
+    "runtime": "1h 37m",
+    "tagline": "Watch your back.",
+    "synopsis": "A teenager entering public school for the first time gets drawn into a popular clique and learns how quickly social games can turn.",
+    "mood": "rose",
+    "cast": [
+      "Lindsay Lohan",
+      "Rachel McAdams",
+      "Tina Fey"
+    ]
+  },
+  {
+    "id": 137,
+    "title": "Goodfellas",
+    "year": 1990,
+    "genre": "Crime",
+    "runtime": "2h 25m",
+    "tagline": "Three decades of life in the mafia.",
+    "synopsis": "A young man rises through an organised-crime crew and discovers that wealth and loyalty come with a devastating cost.",
+    "mood": "slate",
+    "cast": [
+      "Ray Liotta",
+      "Robert De Niro",
+      "Joe Pesci"
+    ]
+  },
+  {
+    "id": 138,
+    "title": "Heat",
+    "year": 1995,
+    "genre": "Crime",
+    "runtime": "2h 50m",
+    "tagline": "A Los Angeles crime saga.",
+    "synopsis": "A disciplined detective and a professional thief become locked in a high-stakes pursuit that blurs the line between their lives.",
+    "mood": "blue",
+    "cast": [
+      "Al Pacino",
+      "Robert De Niro",
+      "Val Kilmer"
+    ]
+  },
+  {
+    "id": 139,
+    "title": "The Departed",
+    "year": 2006,
+    "genre": "Crime",
+    "runtime": "2h 31m",
+    "tagline": "Lies. Betrayal. Sacrifice. How far will you take it?",
+    "synopsis": "An undercover officer inside a Boston gang and a gang informant inside the police try to expose each other before their identities are revealed.",
+    "mood": "forest",
+    "cast": [
+      "Leonardo DiCaprio",
+      "Matt Damon",
+      "Jack Nicholson"
+    ]
+  },
+  {
+    "id": 140,
+    "title": "Forrest Gump",
+    "year": 1994,
+    "genre": "Drama",
+    "runtime": "2h 22m",
+    "tagline": "Life is like a box of chocolates.",
+    "synopsis": "A kind-hearted Alabama man recounts his unexpected place in several defining moments of American history.",
+    "mood": "blue",
+    "cast": [
+      "Tom Hanks",
+      "Robin Wright",
+      "Gary Sinise"
+    ]
+  },
+  {
+    "id": 141,
+    "title": "Good Will Hunting",
+    "year": 1997,
+    "genre": "Drama",
+    "runtime": "2h 06m",
+    "tagline": "Some people can never believe in themselves until someone believes in them.",
+    "synopsis": "A gifted young janitor at MIT confronts his troubled past with help from a professor and a therapist.",
+    "mood": "slate",
+    "cast": [
+      "Matt Damon",
+      "Robin Williams",
+      "Ben Affleck"
+    ]
+  },
+  {
+    "id": 142,
+    "title": "Moonlight",
+    "year": 2016,
+    "genre": "Drama",
+    "runtime": "1h 51m",
+    "tagline": "This is the story of a lifetime.",
+    "synopsis": "Across three stages of life, a young Black man in Miami navigates identity, family, friendship and love.",
+    "mood": "violet",
+    "cast": [
+      "Trevante Rhodes",
+      "André Holland",
+      "Janelle Monáe"
+    ]
+  },
+  {
+    "id": 143,
+    "title": "Hereditary",
+    "year": 2018,
+    "genre": "Horror",
+    "runtime": "2h 07m",
+    "tagline": "Every family tree hides a secret.",
+    "synopsis": "After a family matriarch dies, her descendants uncover increasingly disturbing secrets about their ancestry.",
+    "mood": "forest",
+    "cast": [
+      "Toni Collette",
+      "Alex Wolff",
+      "Milly Shapiro"
+    ]
+  },
+  {
+    "id": 144,
+    "title": "The Conjuring",
+    "year": 2013,
+    "genre": "Horror",
+    "runtime": "1h 52m",
+    "tagline": "Based on the case files of the Warrens.",
+    "synopsis": "Paranormal investigators help a family facing frightening events in an isolated farmhouse.",
+    "mood": "slate",
+    "cast": [
+      "Vera Farmiga",
+      "Patrick Wilson",
+      "Lili Taylor"
+    ]
+  },
+  {
+    "id": 145,
+    "title": "The Shining",
+    "year": 1980,
+    "genre": "Horror",
+    "runtime": "2h 26m",
+    "tagline": "A masterpiece of modern horror.",
+    "synopsis": "A writer caring for an isolated hotel with his family begins to unravel as sinister forces take hold of the building.",
+    "mood": "amber",
+    "cast": [
+      "Jack Nicholson",
+      "Shelley Duvall",
+      "Danny Lloyd"
+    ]
+  },
+  {
+    "id": 146,
+    "title": "Se7en",
+    "year": 1995,
+    "genre": "Mystery",
+    "runtime": "2h 07m",
+    "tagline": "Seven deadly sins. Seven ways to die.",
+    "synopsis": "Two detectives hunt a serial killer whose crimes are built around the seven deadly sins.",
+    "mood": "slate",
+    "cast": [
+      "Brad Pitt",
+      "Morgan Freeman",
+      "Gwyneth Paltrow"
+    ]
+  },
+  {
+    "id": 147,
+    "title": "Zodiac",
+    "year": 2007,
+    "genre": "Mystery",
+    "runtime": "2h 37m",
+    "tagline": "There is more than one way to lose your life to a killer.",
+    "synopsis": "Journalists and investigators become consumed by the search for a serial killer who taunts the San Francisco Bay Area.",
+    "mood": "blue",
+    "cast": [
+      "Jake Gyllenhaal",
+      "Mark Ruffalo",
+      "Robert Downey Jr."
+    ]
+  },
+  {
+    "id": 148,
+    "title": "Memento",
+    "year": 2000,
+    "genre": "Mystery",
+    "runtime": "1h 53m",
+    "tagline": "Some memories are best forgotten.",
+    "synopsis": "A man unable to form new memories uses notes and tattoos while trying to solve the mystery of his wife’s death.",
+    "mood": "teal",
+    "cast": [
+      "Guy Pearce",
+      "Carrie-Anne Moss",
+      "Joe Pantoliano"
+    ]
+  },
+  {
+    "id": 149,
+    "title": "Gone Girl",
+    "year": 2014,
+    "genre": "Mystery",
+    "runtime": "2h 29m",
+    "tagline": "You don’t know what you’ve got till it’s…",
+    "synopsis": "When a woman disappears on her wedding anniversary, suspicion falls on her husband and the couple’s carefully shaped public image.",
+    "mood": "rose",
+    "cast": [
+      "Ben Affleck",
+      "Rosamund Pike",
+      "Neil Patrick Harris"
+    ]
+  },
+  {
+    "id": 150,
+    "title": "Blade Runner 2049",
+    "year": 2017,
+    "genre": "Sci-Fi",
+    "runtime": "2h 44m",
+    "tagline": "The key to the future is finally unearthed.",
+    "synopsis": "A replicant officer uncovers a secret that could unsettle the balance between humans and artificial beings.",
+    "mood": "violet",
+    "cast": [
+      "Ryan Gosling",
+      "Harrison Ford",
+      "Ana de Armas"
+    ]
+  },
+  {
+    "id": 151,
+    "title": "Back to the Future",
+    "year": 1985,
+    "genre": "Sci-Fi",
+    "runtime": "1h 56m",
+    "tagline": "He was never in time for his classes…",
+    "synopsis": "A teenager travels to the past in a scientist’s experimental car and must ensure his parents meet or risk erasing his own future.",
+    "mood": "blue",
+    "cast": [
+      "Michael J. Fox",
+      "Christopher Lloyd",
+      "Lea Thompson"
+    ]
+  },
+  {
+    "id": 152,
+    "title": "Terminator 2: Judgment Day",
+    "year": 1991,
+    "genre": "Sci-Fi",
+    "runtime": "2h 17m",
+    "tagline": "It’s nothing personal.",
+    "synopsis": "A reprogrammed cyborg protects a boy destined to lead humanity against a more advanced machine sent to kill him.",
+    "mood": "slate",
+    "cast": [
+      "Arnold Schwarzenegger",
+      "Linda Hamilton",
+      "Edward Furlong"
+    ]
+  },
+  {
+    "id": 153,
+    "title": "Prisoners",
+    "year": 2013,
+    "genre": "Thriller",
+    "runtime": "2h 33m",
+    "tagline": "Every moment matters.",
+    "synopsis": "When two young girls disappear, a desperate father and a determined detective follow different paths toward the truth.",
+    "mood": "forest",
+    "cast": [
+      "Hugh Jackman",
+      "Jake Gyllenhaal",
+      "Viola Davis"
+    ]
+  },
+  {
+    "id": 154,
+    "title": "Shutter Island",
+    "year": 2010,
+    "genre": "Thriller",
+    "runtime": "2h 18m",
+    "tagline": "Someone is missing.",
+    "synopsis": "A U.S. marshal investigating a disappearance at a remote psychiatric facility begins to question the island and his own perceptions.",
+    "mood": "slate",
+    "cast": [
+      "Leonardo DiCaprio",
+      "Mark Ruffalo",
+      "Ben Kingsley"
+    ]
+  },
+  {
+    "id": 155,
+    "title": "Nightcrawler",
+    "year": 2014,
+    "genre": "Thriller",
+    "runtime": "1h 57m",
+    "tagline": "The city shines brightest at night.",
+    "synopsis": "An ambitious freelance cameraman finds success filming violent incidents for local television and gradually crosses ethical lines.",
+    "mood": "amber",
+    "cast": [
+      "Jake Gyllenhaal",
+      "Riz Ahmed",
+      "Rene Russo"
+    ]
+  }
+]
